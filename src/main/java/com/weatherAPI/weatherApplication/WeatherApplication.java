@@ -1,5 +1,4 @@
-package com.weatherAPI.weatherApplication;
-
+package com.weatherAPI.weatherApplication;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
