@@ -11,7 +11,6 @@ public class WeatherData {
     @JsonProperty("BezirksForecast")
     private List<Forecast> forecast;
 
-    // Getters and Setters
     public String getDistrictName() {
         return districtName;
     }
@@ -28,7 +27,6 @@ public class WeatherData {
         this.forecast = forecast;
     }
 
-    // Nested class for Forecast
     public static class Forecast {
         @JsonProperty("WeatherDesc")
         private String weatherDescription;
@@ -39,7 +37,6 @@ public class WeatherData {
         @JsonProperty("MinTemp")
         private int minTemp;
 
-        // Getters and Setters
         public String getWeatherDescription() {
             return weatherDescription;
         }
