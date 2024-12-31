@@ -10,6 +10,10 @@ import org.springframework.web.client.RestTemplate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 @Service
 public class BikeService {
@@ -26,7 +30,7 @@ public class BikeService {
 
     /**
      * Fetches live bike data from the external API.
-     * Also calls the `saveBikeTrends` method to store trends in memory.
+     * Also calls the saveBikeTrends method to store trends in memory.
      *
      * @return List of BikeData objects representing live bike data.
      */
@@ -41,7 +45,7 @@ public class BikeService {
 
     /**
      * Saves trends for the fetched bike data by processing each station's metadata.
-     * Trends are added to the in-memory list `trends`.
+     * Trends are added to the in-memory list trends.
      *
      * @param bikeDataList List of BikeData objects fetched from the API.
      */
@@ -59,6 +63,13 @@ public class BikeService {
 
                 trend.setTimestamp(LocalDateTime.now());
 
+                if (bikeData.getCoordinate() != null) {
+                    trend.setLongitude(bikeData.getCoordinate().getLongitude());
+                    trend.setLatitude(bikeData.getCoordinate().getLatitude());
+                } else {
+                    trend.setLongitude(0.0); 
+                    trend.setLatitude(0.0); 
+                }
 
                 boolean isDuplicate = trends.stream().anyMatch(existingTrend ->
                     existingTrend.getStationName() != null &&
@@ -75,8 +86,6 @@ public class BikeService {
     }
 
 
-
-
     /**
      * Exposes the saved trends in the in-memory list.
      *
@@ -85,4 +94,33 @@ public class BikeService {
     public List<BikeTrend> getTrends() {
         return trends;
     }
+    
+    /**
+     * Fetches the bike station data for integration with weather districts.
+     *
+     * @return List of maps containing station name and available bikes.
+     */
+    public List<Map<String, Object>> getBikeStations() {
+        List<BikeData> bikeDataList = getBikeData();
+        List<Map<String, Object>> stations = new ArrayList<>();
+
+        for (BikeData bikeData : bikeDataList) {
+            if (bikeData.getStationName() != null && bikeData.getMetadata() != null) {
+                Map<String, Object> station = new HashMap<>();
+                station.put("stationName", bikeData.getStationName());
+
+                if (bikeData.getMetadata().getBikes() != null) {
+                    station.put("availableBikes", bikeData.getMetadata().getBikes().getOrDefault("number-available", 0));
+                } else {
+                    station.put("availableBikes", 0); 
+                }
+
+                stations.add(station);
+            }
+        }
+
+        return stations;
+    }
+
+
 }
