@@ -1,4 +1,4 @@
-package com.weatherAPI.weatherApplication.controllers;
+package com.weatherAPI.weatherApplication.controller;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
