@@ -11,16 +11,13 @@ public class WeatherData {
     @JsonProperty("BezirksForecast")
     private List<Forecast> forecast;
 
-    // Constructor to match the test case
     public WeatherData(String districtName, List<Forecast> forecast) {
         this.districtName = districtName;
         this.forecast = forecast;
     }
 
-    // Default constructor if needed
     public WeatherData() {}
 
-    // Getters and setters
     public String getDistrictName() {
         return districtName;
     }
@@ -37,7 +34,6 @@ public class WeatherData {
         this.forecast = forecast;
     }
 
-    // Static inner class for Forecast
     public static class Forecast {
 
         @JsonProperty("WeatherDesc")
@@ -49,17 +45,22 @@ public class WeatherData {
         @JsonProperty("MinTemp")
         private int minTemp;
 
-        // Constructor to match the test case
-        public Forecast(String weatherDescription, int maxTemp, int minTemp) {
+        @JsonProperty("Latitude") 
+        private Double latitude;
+
+        @JsonProperty("Longitude")  
+        private Double longitude;
+
+        public Forecast(String weatherDescription, int maxTemp, int minTemp, Double latitude, Double longitude) {
             this.weatherDescription = weatherDescription;
             this.maxTemp = maxTemp;
             this.minTemp = minTemp;
+            this.latitude = latitude;
+            this.longitude = longitude;
         }
 
-        // Default constructor
         public Forecast() {}
 
-        // Getters and setters
         public String getWeatherDescription() {
             return weatherDescription;
         }
@@ -82,6 +83,22 @@ public class WeatherData {
 
         public void setMinTemp(int minTemp) {
             this.minTemp = minTemp;
+        }
+
+        public Double getLatitude() {
+            return latitude;
+        }
+
+        public void setLatitude(Double latitude) {
+            this.latitude = latitude;
+        }
+
+        public Double getLongitude() {
+            return longitude;
+        }
+
+        public void setLongitude(Double longitude) {
+            this.longitude = longitude;
         }
     }
 }

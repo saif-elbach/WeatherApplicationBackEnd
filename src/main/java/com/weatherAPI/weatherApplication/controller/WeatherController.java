@@ -16,22 +16,18 @@ public class WeatherController {
     @Autowired
     private WeatherService weatherService;
 
-    // Endpoint to get raw weather data
     @GetMapping("/weather")
     public WeatherData[] getWeather() {
         return weatherService.getWeatherData();
     }
 
-    // Endpoint to get weather trends
     @GetMapping("/weather-trends")
     public List<Map<String, Object>> getWeatherTrends() {
         return weatherService.getWeatherTrends();
     }
 
-    // Endpoint to provide weather-based recommendations
     @PostMapping("/recommendations")
     public List<Map<String, Object>> getRecommendations(@RequestBody UserPreferences userPreferences) {
-        // Pass user preferences to the service and return recommendations
         return weatherService.getRecommendations(userPreferences);
     }
     
