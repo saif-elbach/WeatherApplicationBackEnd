@@ -103,6 +103,7 @@ public class BikeService {
     public List<Map<String, Object>> getBikeStations() {
         List<BikeData> bikeDataList = getBikeData();
         List<Map<String, Object>> stations = new ArrayList<>();
+        List<String> seenStations = new ArrayList<>(); 
 
         for (BikeData bikeData : bikeDataList) {
             if (bikeData.getStationName() != null && bikeData.getMetadata() != null) {
@@ -115,12 +116,25 @@ public class BikeService {
                     station.put("availableBikes", 0); 
                 }
 
-                stations.add(station);
+                double latitude = (bikeData.getCoordinate() != null) ? bikeData.getCoordinate().getLatitude() : 0.0;
+                double longitude = (bikeData.getCoordinate() != null) ? bikeData.getCoordinate().getLongitude() : 0.0;
+
+                station.put("latitude", latitude);
+                station.put("longitude", longitude);
+
+                String stationKey = bikeData.getStationName() + "_" + latitude + "_" + longitude;
+                
+                if (!seenStations.contains(stationKey)) {
+                    seenStations.add(stationKey);
+                    stations.add(station);
+                }
             }
         }
 
         return stations;
     }
+
+
 
 
 }

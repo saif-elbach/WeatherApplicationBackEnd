@@ -6,24 +6,18 @@ public class BikeTrend {
     private String stationName;
     private Integer availableBikes;
     private LocalDateTime timestamp;
-    
     private double latitude;
     private double longitude;
 
-    public double getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(double latitude) {
+    public BikeTrend(String stationName, Integer availableBikes, LocalDateTime timestamp, double latitude, double longitude) {
+        this.stationName = stationName;
+        this.availableBikes = availableBikes;
+        this.timestamp = timestamp;
         this.latitude = latitude;
-    }
-
-    public double getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(double longitude) {
         this.longitude = longitude;
+    }
+
+    public BikeTrend() {
     }
 
     public String getStationName() {
@@ -48,5 +42,21 @@ public class BikeTrend {
 
     public void setTimestamp(LocalDateTime timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 }

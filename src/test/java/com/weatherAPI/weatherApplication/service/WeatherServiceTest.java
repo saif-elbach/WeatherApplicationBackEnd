@@ -1,13 +1,17 @@
 package com.weatherAPI.weatherApplication.service;
 
 import com.weatherAPI.weatherApplication.model.WeatherData;
+import com.weatherAPI.weatherApplication.model.UserPreferences;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.web.client.RestTemplate;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import java.util.List;
+import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 class WeatherServiceTest {
@@ -24,7 +28,6 @@ class WeatherServiceTest {
 
     @Test
     void getWeatherData_success() {
-        // Mock API response
         WeatherData mockWeatherData = new WeatherData();
         mockWeatherData.setDistrictName("Test District");
 
@@ -32,11 +35,149 @@ class WeatherServiceTest {
             "https://tourism.api.opendatahub.com/v1/Weather/District", WeatherData[].class
         )).thenReturn(new WeatherData[]{mockWeatherData});
 
-        // Service call
         WeatherData[] weatherData = weatherService.getWeatherData();
 
-        // Assertions
         assertEquals(1, weatherData.length);
         assertEquals("Test District", weatherData[0].getDistrictName());
+    }
+
+    @Test
+    void getWeatherTrends_success() {
+        WeatherData mockWeatherData = new WeatherData();
+        mockWeatherData.setDistrictName("Test District");
+        
+        WeatherData.Forecast forecast1 = new WeatherData.Forecast();
+        forecast1.setMaxTemp(25);
+        forecast1.setMinTemp(15);
+        forecast1.setWeatherDescription("Clear sky");
+
+        WeatherData.Forecast forecast2 = new WeatherData.Forecast();
+        forecast2.setMaxTemp(28);
+        forecast2.setMinTemp(18);
+        forecast2.setWeatherDescription("Partly cloudy");
+
+        mockWeatherData.setForecast(List.of(forecast1, forecast2));
+
+        when(restTemplate.getForObject(
+            "https://tourism.api.opendatahub.com/v1/Weather/District", WeatherData[].class
+        )).thenReturn(new WeatherData[]{mockWeatherData});
+
+        List<Map<String, Object>> trends = weatherService.getWeatherTrends();
+
+        assertEquals(1, trends.size());
+        assertEquals("Test District", trends.get(0).get("DistrictName"));
+        assertEquals(26.5, trends.get(0).get("AverageMaxTemp")); // (25 + 28) / 2
+        assertEquals(16.5, trends.get(0).get("AverageMinTemp")); // (15 + 18) / 2
+    }
+
+    @Test
+    void filterWeatherTrends_success() {
+        WeatherData mockWeatherData = new WeatherData();
+        mockWeatherData.setDistrictName("Test District");
+
+        WeatherData.Forecast forecast1 = new WeatherData.Forecast();
+        forecast1.setMaxTemp(25);
+        forecast1.setMinTemp(15);
+        
+        WeatherData.Forecast forecast2 = new WeatherData.Forecast();
+        forecast2.setMaxTemp(28);
+        forecast2.setMinTemp(18);
+
+        mockWeatherData.setForecast(List.of(forecast1, forecast2));
+
+        when(restTemplate.getForObject(
+            "https://tourism.api.opendatahub.com/v1/Weather/District", WeatherData[].class
+        )).thenReturn(new WeatherData[]{mockWeatherData});
+
+        UserPreferences preferences = new UserPreferences();
+        preferences.setMinTemperature(16);
+        preferences.setMaxTemperature(27);
+
+        List<Map<String, Object>> filteredTrends = weatherService.filterWeatherTrends(preferences);
+
+        assertEquals(1, filteredTrends.size());
+        assertEquals("Test District", filteredTrends.get(0).get("DistrictName"));
+        assertEquals(16.5, filteredTrends.get(0).get("AverageMinTemp"));
+        assertEquals(26.5, filteredTrends.get(0).get("AverageMaxTemp"));
+    }
+
+    @Test
+    void getRecommendations_success() {
+        WeatherData mockWeatherData = new WeatherData();
+        mockWeatherData.setDistrictName("Test District");
+
+        WeatherData.Forecast forecast = new WeatherData.Forecast();
+        forecast.setMaxTemp(25);
+        forecast.setMinTemp(18);
+        forecast.setWeatherDescription("Clear sky");
+
+        mockWeatherData.setForecast(List.of(forecast));
+
+        when(restTemplate.getForObject(
+            "https://tourism.api.opendatahub.com/v1/Weather/District", WeatherData[].class
+        )).thenReturn(new WeatherData[]{mockWeatherData});
+
+        UserPreferences preferences = new UserPreferences();
+        preferences.setPreferredWeather("Clear sky");
+        preferences.setMinTemperature(15);
+        preferences.setMaxTemperature(30);
+
+        List<Map<String, Object>> recommendations = weatherService.getRecommendations(preferences);
+
+        assertEquals(1, recommendations.size());
+        assertEquals("Test District", recommendations.get(0).get("DistrictName"));
+        assertEquals("Clear sky", recommendations.get(0).get("WeatherDesc"));
+        assertEquals("18 to 25", recommendations.get(0).get("TemperatureRange"));
+    }
+
+    @Test
+    void getRecommendations_noMatch() {
+        WeatherData mockWeatherData = new WeatherData();
+        mockWeatherData.setDistrictName("Test District");
+
+        WeatherData.Forecast forecast = new WeatherData.Forecast();
+        forecast.setMaxTemp(25);
+        forecast.setMinTemp(18);
+        forecast.setWeatherDescription("Cloudy");
+
+        mockWeatherData.setForecast(List.of(forecast));
+
+        when(restTemplate.getForObject(
+            "https://tourism.api.opendatahub.com/v1/Weather/District", WeatherData[].class
+        )).thenReturn(new WeatherData[]{mockWeatherData});
+
+        UserPreferences preferences = new UserPreferences();
+        preferences.setPreferredWeather("Clear sky");
+        preferences.setMinTemperature(15);
+        preferences.setMaxTemperature(30);
+
+        List<Map<String, Object>> recommendations = weatherService.getRecommendations(preferences);
+
+        assertEquals(1, recommendations.size());
+        assertEquals("No matching recommendations found for your preferences.", recommendations.get(0).get("message"));
+    }
+
+    @Test
+    void validatePreferences_invalid() {
+        UserPreferences preferences = new UserPreferences();
+        preferences.setMinTemperature(30);
+        preferences.setMaxTemperature(25);
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            weatherService.filterWeatherTrends(preferences);
+        });
+
+        assertEquals("Minimum temperature cannot be greater than maximum temperature.", exception.getMessage());
+    }
+
+    @Test
+    void getWeatherData_emptyResponse() {
+        when(restTemplate.getForObject(
+            "https://tourism.api.opendatahub.com/v1/Weather/District", WeatherData[].class
+        )).thenReturn(new WeatherData[]{});
+
+        WeatherData[] weatherData = weatherService.getWeatherData();
+
+        assertEquals(0, weatherData.length);
     }
 }

@@ -122,14 +122,4 @@ public class WeatherService {
             throw new IllegalArgumentException("Minimum temperature cannot be greater than maximum temperature.");
         }
     }
-
-    private final Map<String, String> districtToMunicipality = Map.of(
-        "Bolzano, Überetsch and Unterland", "Bolzano",
-        "Burggrafenamt - Meran and surroundings", "Meran - Merano",
-        "Vinschgau", "Vinschgau",
-        "Eisacktal and Sarntal", "Sarntal",
-        "Wipptal - Sterzing and surroundings", "Sterzing",
-        "Pustertal", "Pustertal",
-        "Ladinia - Dolomites", "Dolomites"
-    );
 }

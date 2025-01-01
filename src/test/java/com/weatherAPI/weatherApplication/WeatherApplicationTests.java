@@ -8,6 +8,5 @@ class WeatherApplicationTests {
 
     @Test
     void contextLoads() {
-        // Ensure the Spring application context loads without errors
     }
 }
