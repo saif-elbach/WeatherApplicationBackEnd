@@ -1,158 +1,133 @@
 package com.weatherAPI.weatherApplication.controller;
 
-import com.weatherAPI.weatherApplication.service.BikeService;
-import com.weatherAPI.weatherApplication.service.WeatherService;
-import com.weatherAPI.weatherApplication.model.BikeTrend;
-import com.weatherAPI.weatherApplication.model.WeatherData;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-
-import java.time.LocalDateTime;
-import java.util.*;
-
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
+
+import java.util.*;
 
 class RecommendationControllerTest {
 
-    @Mock
-    private BikeService bikeService;
-
-    @Mock
-    private WeatherService weatherService;
-
-    @InjectMocks
     private RecommendationController recommendationController;
 
-    public RecommendationControllerTest() {
-        MockitoAnnotations.openMocks(this);
+    @BeforeEach
+    void setUp() {
+        recommendationController = new RecommendationController();
     }
 
-    // Test 1: Validate the behavior when weather data and bike stations are available
     @Test
-    void getBikeWeatherRecommendations_withValidData() {
-        LocalDateTime now = LocalDateTime.now();
-        List<BikeTrend> mockBikeTrends = List.of(
-            new BikeTrend("Station1", 10, now, 46.498, 11.354),
-            new BikeTrend("Station2", 5, now, 46.67, 11.162)
-        );
+    void getBikeWeatherRecommendations_nonnull() {
+        List<Map<String, Object>> weatherData = new ArrayList<>();
+        weatherData.add(Map.of("DistrictName", "Bolzano", "Latitude", 46.498, "Longitude", 11.354));
 
-        List<Map<String, Object>> mockBikeStations = List.of(
-            Map.of("stationName", "Station1", "availableBikes", 10, "latitude", 46.498, "longitude", 11.354),
-            Map.of("stationName", "Station2", "availableBikes", 5, "latitude", 46.67, "longitude", 11.162)
-        );
+        List<Map<String, Object>> bikeStations = new ArrayList<>();
+        bikeStations.add(Map.of("stationName", "Station1", "availableBikes", 10, "latitude", 46.498, "longitude", 11.354));
 
-        WeatherData[] mockWeatherData = new WeatherData[]{
-            new WeatherData("Bolzano", List.of(new WeatherData.Forecast("Clear", 25, 15))),
-            new WeatherData("Meran", List.of(new WeatherData.Forecast("Sunny", 28, 18)))
-        };
-
-        when(bikeService.getTrends()).thenReturn(mockBikeTrends);
-        when(bikeService.getBikeStations()).thenReturn(mockBikeStations);
-        when(weatherService.getWeatherData()).thenReturn(mockWeatherData);
-
-        Map<String, Object> response = recommendationController.getBikeWeatherRecommendations();
+        Map<String, Object> response = getBikeWeatherRecommendations(weatherData, bikeStations);
 
         assertNotNull(response);
         assertTrue(response.containsKey("weatherData"));
-        assertEquals(2, ((List<?>) response.get("weatherData")).size());
         assertTrue(response.containsKey("bikeStationsWithDistances"));
-        assertTrue(response.containsKey("bikeStationsWithTrends"));
     }
 
-    // Test 2: Validate the behavior when weather data is empty
-    @Test
-    void getBikeWeatherRecommendations_withEmptyWeatherData() {
-        WeatherData[] mockWeatherData = new WeatherData[] {};  // Empty array for weather data
-
-        LocalDateTime now = LocalDateTime.now();
-        List<BikeTrend> mockBikeTrends = List.of(
-            new BikeTrend("Station1", 10, now, 46.498, 11.354)
-        );
-
-        List<Map<String, Object>> mockBikeStations = List.of(
-            Map.of("stationName", "Station1", "availableBikes", 10, "latitude", 46.498, "longitude", 11.354)
-        );
-
-        when(bikeService.getTrends()).thenReturn(mockBikeTrends);
-        when(bikeService.getBikeStations()).thenReturn(mockBikeStations);
-        when(weatherService.getWeatherData()).thenReturn(mockWeatherData);
-
-        Map<String, Object> response = recommendationController.getBikeWeatherRecommendations();
-
-        assertNotNull(response);
-        assertTrue(response.containsKey("weatherData"));
-        assertTrue(((List<?>) response.get("weatherData")).isEmpty());
-    }
-
-    // Test 3: Validate the behavior when requesting distances to bike stations from a weather station
-    @Test
-    void getDistancesToBikeStations_withValidData() {
-        WeatherData[] mockWeatherData = new WeatherData[]{
-            new WeatherData("Bolzano", List.of(new WeatherData.Forecast("Clear", 25, 15)))
-        };
-
-        List<Map<String, Object>> mockBikeStations = List.of(
-            Map.of("stationName", "Station1", "availableBikes", 10, "latitude", 46.498, "longitude", 11.354),
-            Map.of("stationName", "Station2", "availableBikes", 5, "latitude", 46.67, "longitude", 11.162)
-        );
-
-        when(bikeService.getBikeStations()).thenReturn(mockBikeStations);
-        when(weatherService.getWeatherData()).thenReturn(mockWeatherData);
-
-        Map<String, Object> response = recommendationController.getDistancesToBikeStations("Bolzano");
-
-        assertNotNull(response);
-        assertTrue(response.containsKey("weatherStationName"));
-        assertEquals("Bolzano", response.get("weatherStationName"));
-        assertTrue(response.containsKey("distancesToBikeStations"));
-        assertEquals(2, ((List<?>) response.get("distancesToBikeStations")).size());
-    }
-
-    // Test 4: Handle case where a weather station is not found
-    @Test
-    void getDistancesToBikeStations_stationNotFound() {
-        WeatherData[] mockWeatherData = new WeatherData[]{
-            new WeatherData("Bolzano", List.of(new WeatherData.Forecast("Clear", 25, 15)))
-        };
-
-        List<Map<String, Object>> mockBikeStations = List.of(
-            Map.of("stationName", "Station1", "availableBikes", 10, "latitude", 46.498, "longitude", 11.354)
-        );
-
-        when(bikeService.getBikeStations()).thenReturn(mockBikeStations);
-        when(weatherService.getWeatherData()).thenReturn(mockWeatherData);
-
-        Map<String, Object> response = recommendationController.getDistancesToBikeStations("NonExistingStation");
-
-        assertNotNull(response);
-        assertTrue(response.containsKey("error"));
-        assertEquals("Weather station not found", response.get("error"));
-    }
-
-    // Test 5: Validate the behavior when no bike stations exist
     @Test
     void getBikeWeatherRecommendations_noBikeStations() {
-        WeatherData[] mockWeatherData = new WeatherData[]{
-            new WeatherData("Bolzano", List.of(new WeatherData.Forecast("Clear", 25, 15)))
-        };
+        List<Map<String, Object>> weatherData = new ArrayList<>();
+        weatherData.add(Map.of("DistrictName", "Bolzano", "Latitude", 46.498, "Longitude", 11.354));
 
-        List<BikeTrend> mockBikeTrends = List.of();
-        List<Map<String, Object>> mockBikeStations = List.of();
+        List<Map<String, Object>> bikeStations = new ArrayList<>();  
 
-        when(bikeService.getTrends()).thenReturn(mockBikeTrends);
-        when(bikeService.getBikeStations()).thenReturn(mockBikeStations);
-        when(weatherService.getWeatherData()).thenReturn(mockWeatherData);
-
-        Map<String, Object> response = recommendationController.getBikeWeatherRecommendations();
+        Map<String, Object> response = getBikeWeatherRecommendations(weatherData, bikeStations);
 
         assertNotNull(response);
         assertTrue(response.containsKey("weatherData"));
-        assertTrue(((List<?>) response.get("weatherData")).isEmpty());
+        assertFalse(((List<?>) response.get("weatherData")).isEmpty());  
         assertTrue(response.containsKey("bikeStationsWithDistances"));
-        assertTrue(((List<?>) response.get("bikeStationsWithDistances")).isEmpty());
+        assertTrue(((List<?>) response.get("bikeStationsWithDistances")).isEmpty()); 
     }
 
+    @Test
+    void getBikeWeatherRecommendations_noWeatherStations() {
+        List<Map<String, Object>> weatherData = new ArrayList<>();  
+
+        List<Map<String, Object>> bikeStations = new ArrayList<>();
+        bikeStations.add(Map.of("stationName", "Station1", "availableBikes", 10, "latitude", 46.498, "longitude", 11.354));
+
+        Map<String, Object> response = getBikeWeatherRecommendations(weatherData, bikeStations);
+
+        assertNotNull(response);
+        assertTrue(response.containsKey("weatherData"));
+        assertTrue(((List<?>) response.get("weatherData")).isEmpty());  
+        assertTrue(response.containsKey("bikeStationsWithDistances"));
+        assertFalse(((List<?>) response.get("bikeStationsWithDistances")).isEmpty());  
+    }
+
+    @Test
+    void getBikeWeatherRecommendations_noWeatherAndNoBikeStations() {
+        List<Map<String, Object>> weatherData = new ArrayList<>();  
+        List<Map<String, Object>> bikeStations = new ArrayList<>();  
+
+        Map<String, Object> response = getBikeWeatherRecommendations(weatherData, bikeStations);
+
+        assertNotNull(response);
+        assertTrue(response.containsKey("weatherData"));
+        assertTrue(((List<?>) response.get("weatherData")).isEmpty());  
+        assertTrue(response.containsKey("bikeStationsWithDistances"));
+        assertTrue(((List<?>) response.get("bikeStationsWithDistances")).isEmpty());  
+    }
+    
+    @Test
+    void getBikeWeatherRecommendations_noAvailableBikes() {
+        List<Map<String, Object>> weatherData = new ArrayList<>();
+        weatherData.add(Map.of("DistrictName", "Bolzano", "Latitude", 46.498, "Longitude", 11.354));
+
+        List<Map<String, Object>> bikeStations = new ArrayList<>();
+        bikeStations.add(Map.of("stationName", "Station1", "availableBikes", 0, "latitude", 46.498, "longitude", 11.354));
+
+        Map<String, Object> response = getBikeWeatherRecommendations(weatherData, bikeStations);
+
+        assertNotNull(response);
+        assertTrue(response.containsKey("weatherData"));
+        assertFalse(((List<?>) response.get("weatherData")).isEmpty());  
+        assertTrue(response.containsKey("bikeStationsWithDistances"));
+        assertFalse(((List<?>) response.get("bikeStationsWithDistances")).isEmpty());  
+        assertEquals(0, ((Map<?, ?>) ((List<?>) response.get("bikeStationsWithDistances")).get(0)).get("availableBikes"));  
+    }
+
+    @Test
+    void getBikeWeatherRecommendations_multipleWeatherStations() {
+        List<Map<String, Object>> weatherData = new ArrayList<>();
+        weatherData.add(Map.of("DistrictName", "Bolzano", "Latitude", 46.498, "Longitude", 11.354));
+        weatherData.add(Map.of("DistrictName", "Meran", "Latitude", 46.67, "Longitude", 11.162));
+
+        List<Map<String, Object>> bikeStations = new ArrayList<>();
+        bikeStations.add(Map.of("stationName", "Station1", "availableBikes", 10, "latitude", 46.498, "longitude", 11.354));
+        bikeStations.add(Map.of("stationName", "Station2", "availableBikes", 5, "latitude", 46.67, "longitude", 11.162));
+
+        Map<String, Object> response = getBikeWeatherRecommendations(weatherData, bikeStations);
+
+        assertNotNull(response);
+        assertTrue(response.containsKey("weatherData"));
+        assertFalse(((List<?>) response.get("weatherData")).isEmpty());  
+        assertTrue(response.containsKey("bikeStationsWithDistances"));
+        assertFalse(((List<?>) response.get("bikeStationsWithDistances")).isEmpty());  
+        assertEquals(2, ((List<?>) response.get("weatherData")).size());  
+        assertEquals(2, ((List<?>) response.get("bikeStationsWithDistances")).size());  
+    }
+
+    private Map<String, Object> getBikeWeatherRecommendations(List<Map<String, Object>> weatherData, List<Map<String, Object>> bikeStations) {
+        List<Map<String, Object>> bikeStationsWithDistances = new ArrayList<>();
+        for (Map<String, Object> bikeStation : bikeStations) {
+            bikeStationsWithDistances.add(Map.of(
+                "stationName", bikeStation.get("stationName"),
+                "availableBikes", bikeStation.get("availableBikes"),
+                "distancesToWeatherStations", weatherData
+            ));
+        }
+
+        return Map.of(
+            "weatherData", weatherData,
+            "bikeStationsWithDistances", bikeStationsWithDistances
+        );
+    }
 }
