@@ -11,6 +11,8 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
+@CrossOrigin(origins = "http://localhost:3000") // Allow requests from the React app
+
 public class WeatherController {
 
     @Autowired

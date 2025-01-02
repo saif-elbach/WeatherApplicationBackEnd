@@ -1,4 +1,8 @@
-package com.weatherAPI.weatherApplication.controller;
+package com.weatherAPI.weatherApplication.service;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.Test;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -6,13 +10,13 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.*;
 
-class RecommendationControllerTest {
+class RecommendationServiceTest {
 
-    private RecommendationController recommendationController;
+    private RecommendationService recommendationService;
 
     @BeforeEach
     void setUp() {
-        recommendationController = new RecommendationController();
+        recommendationService = new RecommendationService();
     }
 
     @Test

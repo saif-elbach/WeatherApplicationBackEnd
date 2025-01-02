@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Weather API</title>
+</head>
+<body>
+    <h1>Weather Data</h1>
+    <div id="weather"></div>
+
+    <script>
+        // Call the API
+        fetch('http://localhost:8080/api/weather')
+            .then(response => response.json())
+            .then(data => {
+                const container = document.getElementById('weather');
+
+                // Iterate through districts
+                data.forEach(district => {
+                    const districtDiv = document.createElement('div');
+                    districtDiv.style.marginBottom = '20px';
+                    districtDiv.innerHTML = `
+                        <h2>District: ${district.DistrictName}</h2>
+                    `;
+
+                    // Add forecast details
+                    district.BezirksForecast.forEach(forecast => {
+                        const forecastDiv = document.createElement('div');
+                        forecastDiv.style.marginLeft = '20px';
+                        forecastDiv.innerHTML = `
+                            <p>Weather: ${forecast.WeatherDesc}</p>
+                            <p>Max Temp: ${forecast.MaxTemp}°C</p>
+                            <p>Min Temp: ${forecast.MinTemp}°C</p>
+                            <p>Latitude: ${forecast.Latitude ?? 'Not Available'}</p>
+                            <p>Longitude: ${forecast.Longitude ?? 'Not Available'}</p>
+                        `;
+                        districtDiv.appendChild(forecastDiv);
+                    });
+
+                    container.appendChild(districtDiv);
+                });
+            })
+            .catch(error => console.error('Error:', error));
+    </script>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bike Trends</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .trend {
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        h2 {
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <h1>Bike Trends</h1>
+    <div id="trends"></div>
+
+    <script>
+        // Call the API
+        fetch('http://localhost:8080/api/trends')
+            .then(response => response.json())
+            .then(data => {
+                const container = document.getElementById('trends');
+
+                // Iterate through trends
+                data.forEach(trend => {
+                    const trendDiv = document.createElement('div');
+                    trendDiv.className = 'trend';
+                    trendDiv.innerHTML = `
+                        <h2>Station: ${trend.stationName}</h2>
+                        <p>Available Bikes: ${trend.availableBikes}</p>
+                        <p>Timestamp: ${trend.timestamp}</p>
+                        <p>Latitude: ${trend.latitude}</p>
+                        <p>Longitude: ${trend.longitude}</p>
+                    `;
+                    container.appendChild(trendDiv);
+                });
+            })
+            .catch(error => console.error('Error:', error));
+    </script>
+</body>
+</html>
