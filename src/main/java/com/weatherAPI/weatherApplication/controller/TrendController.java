@@ -22,7 +22,6 @@ public class TrendController {
         this.bikeService = bikeService;
     }
 
-    // Standalone endpoint to fetch trends
     @GetMapping("/trends")
     public List<BikeTrend> getStandaloneTrends() {
         return bikeService.getTrends();
