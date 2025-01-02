@@ -66,8 +66,8 @@ class WeatherServiceTest {
 
         assertEquals(1, trends.size());
         assertEquals("Test District", trends.get(0).get("DistrictName"));
-        assertEquals(26.5, trends.get(0).get("AverageMaxTemp")); // (25 + 28) / 2
-        assertEquals(16.5, trends.get(0).get("AverageMinTemp")); // (15 + 18) / 2
+        assertEquals(26.5, trends.get(0).get("AverageMaxTemp")); 
+        assertEquals(16.5, trends.get(0).get("AverageMinTemp"));
     }
 
     @Test

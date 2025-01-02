@@ -26,12 +26,6 @@ public class BikeService {
         this.restTemplate = restTemplate;
     }
 
-    /**
-     * Fetches live bike data from the external API.
-     * Also calls the saveBikeTrends method to store trends in memory.
-     *
-     * @return List of BikeData objects representing live bike data.
-     */
     public List<BikeData> getBikeData() {
         BikeApiResponse response = restTemplate.getForObject(API_URL, BikeApiResponse.class);
         if (response != null) {
@@ -41,12 +35,6 @@ public class BikeService {
         return List.of(); 
     }
 
-    /**
-     * Saves trends for the fetched bike data by processing each station's metadata.
-     * Trends are added to the in-memory list trends.
-     *
-     * @param bikeDataList List of BikeData objects fetched from the API.
-     */
     private void saveBikeTrends(List<BikeData> bikeDataList) {
         for (BikeData bikeData : bikeDataList) {
             if (bikeData.getStationName() != null) { 
@@ -83,21 +71,10 @@ public class BikeService {
         }
     }
 
-
-    /**
-     * Exposes the saved trends in the in-memory list.
-     *
-     * @return List of BikeTrend objects representing historical trends.
-     */
     public List<BikeTrend> getTrends() {
         return trends;
     }
     
-    /**
-     * Fetches the bike station data for integration with weather districts.
-     *
-     * @return List of maps containing station name and available bikes.
-     */
     public List<Map<String, Object>> getBikeStations() {
         List<BikeData> bikeDataList = getBikeData();
         List<Map<String, Object>> stations = new ArrayList<>();
@@ -131,8 +108,4 @@ public class BikeService {
 
         return stations;
     }
-
-
-
-
 }

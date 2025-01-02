@@ -62,7 +62,7 @@ public class BikeTypeController {
     public List<BikeTypeDetails> getBikeAvailabilityByType(@RequestParam String bikeType) {
         List<BikeData> bikeDataList = bikeService.getBikeData();
         List<BikeTypeDetails> filteredDetailsList = new ArrayList<>();
-        Set<String> seenStations = new HashSet<>(); // Track seen stations to avoid duplicates
+        Set<String> seenStations = new HashSet<>();
 
         for (BikeData bikeData : bikeDataList) {
             if (bikeData.getMetadata() != null && bikeData.getMetadata().getBikes() != null) {

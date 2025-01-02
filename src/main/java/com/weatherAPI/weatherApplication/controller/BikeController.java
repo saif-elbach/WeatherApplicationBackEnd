@@ -28,19 +28,16 @@ public class BikeController {
         this.bikeService = bikeService;
     }
 
-    // Endpoint to fetch live bike data
     @GetMapping
     public List<BikeData> getBikeData() {
         return bikeService.getBikeData();
     }
 
-    // Endpoint to fetch historical trends
     @GetMapping("/trends")
     public List<BikeTrend> getTrends() {
         return bikeService.getTrends();
     }
 
-    // Endpoint to fetch bike stations
     @GetMapping("/stations")
     public List<Map<String, Object>> getBikeStations() {
         return bikeService.getBikeStations();
@@ -52,7 +49,7 @@ public class BikeController {
         List<BikeTypeDetails> bikeTypeDetailsList = new ArrayList<>();
 
         for (BikeData bikeData : bikeDataList) {
-            if (bikeData.getMetadata() != null && bikeData.getMetadata().getBikes() != null) { // Null check
+            if (bikeData.getMetadata() != null && bikeData.getMetadata().getBikes() != null) { 
                 BikeTypeDetails details = new BikeTypeDetails();
                 details.setStationName(bikeData.getStationName());
                 details.setBikeTypes(bikeData.getMetadata().getBikes());
