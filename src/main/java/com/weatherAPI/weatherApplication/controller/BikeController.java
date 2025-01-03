@@ -60,8 +60,4 @@ public class BikeController {
 
         return bikeTypeDetailsList;
     }
-
-
-
-
 }
