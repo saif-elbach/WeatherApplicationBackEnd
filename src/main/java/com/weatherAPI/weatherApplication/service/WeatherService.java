@@ -1,6 +1,7 @@
 package com.weatherAPI.weatherApplication.service;
 
 import com.weatherAPI.weatherApplication.model.WeatherData;
+
 import com.weatherAPI.weatherApplication.model.WeatherData.Forecast;
 import com.weatherAPI.weatherApplication.model.UserPreferences;
 

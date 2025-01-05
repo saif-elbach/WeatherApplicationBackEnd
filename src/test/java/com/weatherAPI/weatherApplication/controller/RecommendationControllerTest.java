@@ -130,4 +130,98 @@ class RecommendationControllerTest {
             "bikeStationsWithDistances", bikeStationsWithDistances
         );
     }
+    
+ 
+
+    @Test
+    void getBikeWeatherRecommendations_differentDistricts() {
+        List<Map<String, Object>> weatherData = new ArrayList<>();
+        weatherData.add(Map.of("DistrictName", "Bolzano", "Latitude", 46.498, "Longitude", 11.354));
+        weatherData.add(Map.of("DistrictName", "Meran", "Latitude", 46.67, "Longitude", 11.162));
+
+        List<Map<String, Object>> bikeStations = new ArrayList<>();
+        bikeStations.add(Map.of("stationName", "Station1", "availableBikes", 8, "latitude", 46.498, "longitude", 11.354));
+        bikeStations.add(Map.of("stationName", "Station2", "availableBikes", 3, "latitude", 46.7, "longitude", 11.15));
+
+        Map<String, Object> response = getBikeWeatherRecommendations(weatherData, bikeStations);
+
+        assertNotNull(response);
+        assertTrue(response.containsKey("weatherData"));
+        assertEquals(2, ((List<?>) response.get("weatherData")).size());
+        assertTrue(response.containsKey("bikeStationsWithDistances"));
+        assertEquals(2, ((List<?>) response.get("bikeStationsWithDistances")).size());
+    }
+
+    @Test
+    void getBikeWeatherRecommendations_sameCoordinates() {
+        List<Map<String, Object>> weatherData = new ArrayList<>();
+        weatherData.add(Map.of("DistrictName", "Bolzano", "Latitude", 46.498, "Longitude", 11.354));
+
+        List<Map<String, Object>> bikeStations = new ArrayList<>();
+        bikeStations.add(Map.of("stationName", "Station1", "availableBikes", 5, "latitude", 46.498, "longitude", 11.354));
+        bikeStations.add(Map.of("stationName", "Station2", "availableBikes", 15, "latitude", 46.498, "longitude", 11.354));
+
+        Map<String, Object> response = getBikeWeatherRecommendations(weatherData, bikeStations);
+
+        assertNotNull(response);
+        assertTrue(response.containsKey("weatherData"));
+        assertFalse(((List<?>) response.get("weatherData")).isEmpty());
+        assertTrue(response.containsKey("bikeStationsWithDistances"));
+        assertEquals(2, ((List<?>) response.get("bikeStationsWithDistances")).size());
+    }
+
+    @Test
+    void getBikeWeatherRecommendations_negativeCoordinates() {
+        List<Map<String, Object>> weatherData = new ArrayList<>();
+        weatherData.add(Map.of("DistrictName", "NegativeZone", "Latitude", -46.498, "Longitude", -11.354));
+
+        List<Map<String, Object>> bikeStations = new ArrayList<>();
+        bikeStations.add(Map.of("stationName", "NegativeStation", "availableBikes", 7, "latitude", -46.498, "longitude", -11.354));
+
+        Map<String, Object> response = getBikeWeatherRecommendations(weatherData, bikeStations);
+
+        assertNotNull(response);
+        assertTrue(response.containsKey("weatherData"));
+        assertFalse(((List<?>) response.get("weatherData")).isEmpty());
+        assertTrue(response.containsKey("bikeStationsWithDistances"));
+        assertEquals(1, ((List<?>) response.get("bikeStationsWithDistances")).size());
+    }
+
+    @Test
+    void getBikeWeatherRecommendations_largeDataset() {
+        List<Map<String, Object>> weatherData = new ArrayList<>();
+        for (int i = 1; i <= 100; i++) {
+            weatherData.add(Map.of("DistrictName", "District" + i, "Latitude", 40.0 + i, "Longitude", 10.0 + i));
+        }
+
+        List<Map<String, Object>> bikeStations = new ArrayList<>();
+        for (int i = 1; i <= 100; i++) {
+            bikeStations.add(Map.of("stationName", "Station" + i, "availableBikes", i, "latitude", 40.0 + i, "longitude", 10.0 + i));
+        }
+
+        Map<String, Object> response = getBikeWeatherRecommendations(weatherData, bikeStations);
+
+        assertNotNull(response);
+        assertTrue(response.containsKey("weatherData"));
+        assertEquals(100, ((List<?>) response.get("weatherData")).size());
+        assertTrue(response.containsKey("bikeStationsWithDistances"));
+        assertEquals(100, ((List<?>) response.get("bikeStationsWithDistances")).size());
+    }
+
+    @Test
+    void getBikeWeatherRecommendations_noMatchingCoordinates() {
+        List<Map<String, Object>> weatherData = new ArrayList<>();
+        weatherData.add(Map.of("DistrictName", "Bolzano", "Latitude", 46.498, "Longitude", 11.354));
+
+        List<Map<String, Object>> bikeStations = new ArrayList<>();
+        bikeStations.add(Map.of("stationName", "Station1", "availableBikes", 10, "latitude", 50.0, "longitude", 12.0));
+
+        Map<String, Object> response = getBikeWeatherRecommendations(weatherData, bikeStations);
+
+        assertNotNull(response);
+        assertTrue(response.containsKey("weatherData"));
+        assertFalse(((List<?>) response.get("weatherData")).isEmpty());
+        assertTrue(response.containsKey("bikeStationsWithDistances"));
+        assertEquals(1, ((List<?>) response.get("bikeStationsWithDistances")).size());
+    }
 }
