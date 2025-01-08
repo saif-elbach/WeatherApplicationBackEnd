@@ -1,6 +1,7 @@
 package com.weatherAPI.weatherApplication.service;
 
 import com.weatherAPI.weatherApplication.model.BikeTrend;
+
 import com.weatherAPI.weatherApplication.model.WeatherData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
