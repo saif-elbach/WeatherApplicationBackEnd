@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather to Bike Station Distances</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .result {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+        h1 {
+            text-align: center;
+        }
+        select, button {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Weather to Bike Station Distances</h1>
+    <label for="weatherStation">Select Weather Station:</label>
+    <select id="weatherStation">
+        <option value="Bolzano, Überetsch and Unterland">Bolzano, Überetsch and Unterland</option>
+        <option value="Burggrafenamt - Meran and surroundings">Burggrafenamt - Meran and surroundings</option>
+        <option value="Vinschgau">Vinschgau</option>
+        <option value="Eisacktal and Sarntal">Eisacktal and Sarntal</option>
+        <option value="Wipptal - Sterzing and surroundings">Wipptal - Sterzing and surroundings</option>
+        <option value="Pustertal">Pustertal</option>
+        <option value="Ladinia - Dolomites">Ladinia - Dolomites</option>
+    </select>
+    <button onclick="fetchDistances()">Get Distances</button>
+    <div id="results"></div>
+
+    <script>
+        function fetchDistances() {
+            const weatherStationName = document.getElementById("weatherStation").value;
+            fetch(`http://localhost:8080/api/weather-to-bike-distances?weatherStationName=${encodeURIComponent(weatherStationName)}`)
+                .then(response => response.json())
+                .then(data => {
+                    const resultsDiv = document.getElementById("results");
+                    resultsDiv.innerHTML = `<h3>Weather Station: ${data.weatherStationName}</h3>`;
+                    data.distancesToBikeStations.forEach(station => {
+                        const stationDiv = document.createElement("div");
+                        stationDiv.className = "result";
+                        stationDiv.innerHTML = `
+                            <strong>Bike Station:</strong> ${station.bikeStationName}<br>
+                            <strong>Distance:</strong> ${station.distance} km<br>
+                            <strong>Available Bikes:</strong> ${station.availableBikes}
+                        `;
+                        resultsDiv.appendChild(stationDiv);
+                    });
+                })
+                .catch(error => {
+                    console.error("Error fetching distances:", error);
+                });
+        }
+    </script>
+</body>
+</html>

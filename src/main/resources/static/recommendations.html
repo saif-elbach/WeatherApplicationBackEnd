@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Recommendations</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .recommendation {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+        h1 {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>Weather Recommendations</h1>
+    <form id="preferencesForm">
+        <label for="preferredWeather">Preferred Weather:</label>
+        <select id="preferredWeather" name="preferredWeather">
+            <option value="Sunny">Sunny</option>
+            <option value="Cloudy">Cloudy</option>
+            <option value="Partly Cloudy">Partly Cloudy</option>
+            <option value="Very Cloudy">Very Cloudy</option>
+        </select><br><br>
+        <label for="minTemperature">Min Temperature:</label>
+        <input type="number" id="minTemperature" name="minTemperature" value="-5"><br><br>
+        <label for="maxTemperature">Max Temperature:</label>
+        <input type="number" id="maxTemperature" name="maxTemperature" value="15"><br><br>
+        <button type="submit">Get Recommendations</button>
+    </form>
+
+    <div id="recommendations"></div>
+
+    <script>
+        document.getElementById("preferencesForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            const preferences = {
+                preferredWeather: document.getElementById("preferredWeather").value,
+                minTemperature: parseInt(document.getElementById("minTemperature").value),
+                maxTemperature: parseInt(document.getElementById("maxTemperature").value),
+            };
+
+            fetch("http://localhost:8080/api/recommendations", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(preferences),
+            })
+            .then(response => response.json())
+            .then(data => {
+                const container = document.getElementById("recommendations");
+                container.innerHTML = ""; // Clear previous results
+
+                if (data.length > 0) {
+                    data.forEach(recommendation => {
+                        const div = document.createElement("div");
+                        div.className = "recommendation";
+                        if (recommendation.message) {
+                            div.innerHTML = `<strong>${recommendation.message}</strong>`;
+                        } else {
+                            div.innerHTML = `
+                                <strong>District:</strong> ${recommendation.DistrictName}<br>
+                                <strong>Weather:</strong> ${recommendation.WeatherDesc}<br>
+                                <strong>Temperature Range:</strong> ${recommendation.TemperatureRange}<br>
+                                <strong>Day:</strong> ${recommendation.Day}
+                            `;
+                        }
+                        container.appendChild(div);
+                    });
+                } else {
+                    container.innerHTML = `<strong>No recommendations found for the given preferences.</strong>`;
+                }
+            })
+            .catch(error => {
+                console.error("Error fetching recommendations:", error);
+            });
+        });
+    </script>
+</body>
+</html>
