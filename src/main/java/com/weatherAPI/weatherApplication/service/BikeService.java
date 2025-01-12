@@ -1,17 +1,21 @@
 package com.weatherAPI.weatherApplication.service;
 
-import com.weatherAPI.weatherApplication.model.BikeApiResponse;
-import com.weatherAPI.weatherApplication.model.BikeData;
-import com.weatherAPI.weatherApplication.model.BikeTrend;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
+import com.weatherAPI.weatherApplication.model.BikeApiResponse;
+import com.weatherAPI.weatherApplication.model.BikeData;
+import com.weatherAPI.weatherApplication.model.BikeTrend;
 
 @Service
 public class BikeService {
@@ -27,85 +31,81 @@ public class BikeService {
     }
 
     public List<BikeData> getBikeData() {
-        BikeApiResponse response = restTemplate.getForObject(API_URL, BikeApiResponse.class);
+        BikeApiResponse response = restTemplate.getForObject("https://mobility.api.opendatahub.com/v2/flat/Bicycle", BikeApiResponse.class);
         if (response != null) {
-            saveBikeTrends(response.getData()); 
+            saveBikeTrends(response.getData());
             return response.getData();
         }
-        return List.of(); 
+        return List.of();
     }
 
     private void saveBikeTrends(List<BikeData> bikeDataList) {
         for (BikeData bikeData : bikeDataList) {
-            if (bikeData.getStationName() != null) { 
+            if (bikeData.getStationName() != null) {
                 BikeTrend trend = new BikeTrend();
                 trend.setStationName(bikeData.getStationName());
-
-                if (bikeData.getMetadata() != null && bikeData.getMetadata().getBikes() != null) {
-                    trend.setAvailableBikes(bikeData.getMetadata().getBikes().getOrDefault("number-available", 0));
-                } else {
-                    trend.setAvailableBikes(0);
-                }
-
+                trend.setAvailableBikes(getAvailableBikes(bikeData));
                 trend.setTimestamp(LocalDateTime.now());
+                setCoordinates(trend, bikeData);
 
-                if (bikeData.getCoordinate() != null) {
-                    trend.setLongitude(bikeData.getCoordinate().getLongitude());
-                    trend.setLatitude(bikeData.getCoordinate().getLatitude());
-                } else {
-                    trend.setLongitude(0.0); 
-                    trend.setLatitude(0.0); 
-                }
-
-                boolean isDuplicate = trends.stream().anyMatch(existingTrend ->
-                    existingTrend.getStationName() != null &&
-                    existingTrend.getStationName().equals(trend.getStationName()) &&
-                    existingTrend.getAvailableBikes() == trend.getAvailableBikes() &&
-                    existingTrend.getTimestamp().toLocalDate().equals(trend.getTimestamp().toLocalDate())
-                );
-
-                if (!isDuplicate) {
+                if (!isDuplicateTrend(trend)) {
                     trends.add(trend);
                 }
             }
         }
     }
 
+    private int getAvailableBikes(BikeData bikeData) {
+        return bikeData.getMetadata() != null && bikeData.getMetadata().getBikes() != null
+                ? bikeData.getMetadata().getBikes().getOrDefault("number-available", 0)
+                : 0;
+    }
+
+    private void setCoordinates(BikeTrend trend, BikeData bikeData) {
+        if (bikeData.getCoordinate() != null) {
+            trend.setLongitude(bikeData.getCoordinate().getLongitude());
+            trend.setLatitude(bikeData.getCoordinate().getLatitude());
+        } else {
+            trend.setLongitude(0.0);
+            trend.setLatitude(0.0);
+        }
+    }
+
+    private boolean isDuplicateTrend(BikeTrend trend) {
+        return trends.stream().anyMatch(existingTrend ->
+                Objects.equals(existingTrend.getStationName(), trend.getStationName()) &&
+                        existingTrend.getAvailableBikes() == trend.getAvailableBikes() &&
+                        existingTrend.getTimestamp().toLocalDate().equals(trend.getTimestamp().toLocalDate()));
+    }
+
     public List<BikeTrend> getTrends() {
         return trends;
     }
-    
+
     public List<Map<String, Object>> getBikeStations() {
         List<BikeData> bikeDataList = getBikeData();
-        List<Map<String, Object>> stations = new ArrayList<>();
-        List<String> seenStations = new ArrayList<>(); 
+        Set<String> seenStations = new HashSet<>();
 
-        for (BikeData bikeData : bikeDataList) {
-            if (bikeData.getStationName() != null && bikeData.getMetadata() != null) {
-                Map<String, Object> station = new HashMap<>();
-                station.put("stationName", bikeData.getStationName());
+        return bikeDataList.stream()
+                .filter(bikeData -> bikeData.getStationName() != null && bikeData.getMetadata() != null)
+                .map(bikeData -> createStationMap(bikeData, seenStations))
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+    }
 
-                if (bikeData.getMetadata().getBikes() != null) {
-                    station.put("availableBikes", bikeData.getMetadata().getBikes().getOrDefault("number-available", 0));
-                } else {
-                    station.put("availableBikes", 0); 
-                }
+    private Map<String, Object> createStationMap(BikeData bikeData, Set<String> seenStations) {
+        Map<String, Object> station = new HashMap<>();
+        station.put("stationName", bikeData.getStationName());
+        station.put("availableBikes", getAvailableBikes(bikeData));
+        double latitude = bikeData.getCoordinate() != null ? bikeData.getCoordinate().getLatitude() : 0.0;
+        double longitude = bikeData.getCoordinate() != null ? bikeData.getCoordinate().getLongitude() : 0.0;
+        station.put("latitude", latitude);
+        station.put("longitude", longitude);
 
-                double latitude = (bikeData.getCoordinate() != null) ? bikeData.getCoordinate().getLatitude() : 0.0;
-                double longitude = (bikeData.getCoordinate() != null) ? bikeData.getCoordinate().getLongitude() : 0.0;
-
-                station.put("latitude", latitude);
-                station.put("longitude", longitude);
-
-                String stationKey = bikeData.getStationName() + "_" + latitude + "_" + longitude;
-                
-                if (!seenStations.contains(stationKey)) {
-                    seenStations.add(stationKey);
-                    stations.add(station);
-                }
-            }
+        String stationKey = bikeData.getStationName() + "_" + latitude + "_" + longitude;
+        if (seenStations.add(stationKey)) {
+            return station;
         }
-
-        return stations;
+        return null;
     }
 }

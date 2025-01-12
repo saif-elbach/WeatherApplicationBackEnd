@@ -1,7 +1,6 @@
 package com.weatherAPI.weatherApplication.service;
 
 import com.weatherAPI.weatherApplication.model.WeatherData;
-
 import com.weatherAPI.weatherApplication.model.WeatherData.Forecast;
 import com.weatherAPI.weatherApplication.model.UserPreferences;
 
@@ -9,13 +8,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
+import java.util.function.ToIntFunction;
 import java.util.stream.Collectors;
 
 @Service
 public class WeatherService {
 
     private final RestTemplate restTemplate;
-    private final String API_URL = "https://tourism.api.opendatahub.com/v1/Weather/District";
+    private static final String API_URL = "https://tourism.api.opendatahub.com/v1/Weather/District";
 
     public WeatherService(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
@@ -26,96 +26,74 @@ public class WeatherService {
     }
 
     public List<Map<String, Object>> getWeatherTrends() {
-        WeatherData[] weatherData = getWeatherData();
-        List<Map<String, Object>> trends = new ArrayList<>();
+        return Arrays.stream(getWeatherData())
+            .map(this::calculateTrend)
+            .collect(Collectors.toList());
+    }
 
-        for (WeatherData district : weatherData) {
-            Map<String, Object> trend = new HashMap<>();
-            trend.put("DistrictName", district.getDistrictName());
+    private Map<String, Object> calculateTrend(WeatherData district) {
+        Map<String, Object> trend = new HashMap<>();
+        trend.put("DistrictName", district.getDistrictName());
 
-            double avgMaxTemp = district.getForecast().stream()
-                .mapToInt(Forecast::getMaxTemp)
-                .average()
-                .orElse(0.0);
-            trend.put("AverageMaxTemp", avgMaxTemp);
+        trend.put("AverageMaxTemp", calculateAverage(district.getForecast(), Forecast::getMaxTemp));
+        trend.put("AverageMinTemp", calculateAverage(district.getForecast(), Forecast::getMinTemp));
 
-            double avgMinTemp = district.getForecast().stream()
-                .mapToInt(Forecast::getMinTemp)
-                .average()
-                .orElse(0.0);
-            trend.put("AverageMinTemp", avgMinTemp);
+        return trend;
+    }
 
-            trends.add(trend);
-        }
-
-        return trends;
+    private double calculateAverage(List<Forecast> forecasts, ToIntFunction<Forecast> mapper) {
+        return forecasts.stream().mapToInt(mapper).average().orElse(0.0);
     }
 
     public List<Map<String, Object>> getRecommendations(UserPreferences preferences) {
-        validatePreferences(preferences); 
-        WeatherData[] weatherData = getWeatherData();
-        List<Map<String, Object>> recommendations = new ArrayList<>();
+        validatePreferences(preferences);
 
-        for (WeatherData district : weatherData) {
-            String districtName = district.getDistrictName();
-            boolean districtMatched = false;
-
-            for (int i = 0; i < district.getForecast().size(); i++) {
-                Forecast forecast = district.getForecast().get(i);
-                String weatherDescription = forecast.getWeatherDescription();
-                int maxTemp = forecast.getMaxTemp();
-                int minTemp = forecast.getMinTemp();
-
-                if ((preferences.getPreferredWeather() == null ||
-                        weatherDescription.equalsIgnoreCase(preferences.getPreferredWeather())) &&
-                    minTemp >= preferences.getMinTemperature() &&
-                    maxTemp <= preferences.getMaxTemperature()) {
-
-                    Map<String, Object> recommendation = new HashMap<>();
-                    recommendation.put("DistrictName", districtName);
-                    recommendation.put("WeatherDesc", weatherDescription);
-                    recommendation.put("TemperatureRange", minTemp + " to " + maxTemp);
-
-                    if (i == 0) {
-                        recommendation.put("Day", "current");
-                    } else {
-                        recommendation.put("Day", String.valueOf(i)); 
-                    }
-
-                    recommendations.add(recommendation);
-                    districtMatched = true;
-                    break;
-                }
-            }
-
-            if (!districtMatched) {
-                System.out.println("No matching forecast for district: " + districtName);
-            }
-        }
-
-        if (recommendations.isEmpty()) {
-            Map<String, Object> noResult = new HashMap<>();
-            noResult.put("message", "No matching recommendations found for your preferences.");
-            recommendations.add(noResult);
-        }
-
-        return recommendations;
+        return Arrays.stream(getWeatherData())
+            .map(district -> getRecommendationForDistrict(district, preferences))
+            .filter(Objects::nonNull)
+            .collect(Collectors.toList());
     }
 
+    private Map<String, Object> getRecommendationForDistrict(WeatherData district, UserPreferences preferences) {
+        for (int i = 0; i < district.getForecast().size(); i++) {
+            Forecast forecast = district.getForecast().get(i);
+
+            if (matchesPreferences(forecast, preferences)) {
+                return createRecommendation(district.getDistrictName(), forecast, i);
+            }
+        }
+        return null;
+    }
+
+    private boolean matchesPreferences(Forecast forecast, UserPreferences preferences) {
+        String weatherDescription = preferences.getPreferredWeather();
+        return (weatherDescription == null || forecast.getWeatherDescription().equalsIgnoreCase(weatherDescription)) &&
+               forecast.getMinTemp() >= preferences.getMinTemperature() &&
+               forecast.getMaxTemp() <= preferences.getMaxTemperature();
+    }
+
+    private Map<String, Object> createRecommendation(String districtName, Forecast forecast, int dayIndex) {
+        Map<String, Object> recommendation = new HashMap<>();
+        recommendation.put("DistrictName", districtName);
+        recommendation.put("WeatherDesc", forecast.getWeatherDescription());
+        recommendation.put("TemperatureRange", forecast.getMinTemp() + " to " + forecast.getMaxTemp());
+        recommendation.put("Day", dayIndex == 0 ? "current" : String.valueOf(dayIndex));
+        return recommendation;
+    }
 
     public List<Map<String, Object>> filterWeatherTrends(UserPreferences preferences) {
         validatePreferences(preferences);
-        List<Map<String, Object>> trends = getWeatherTrends();
 
-        return trends.stream()
-            .filter(trend -> {
-                double avgMinTemp = (double) trend.get("AverageMinTemp");
-                double avgMaxTemp = (double) trend.get("AverageMaxTemp");
-
-                return avgMinTemp >= preferences.getMinTemperature() &&
-                       avgMaxTemp <= preferences.getMaxTemperature();
-            })
+        return getWeatherTrends().stream()
+            .filter(trend -> matchesTrendPreferences(trend, preferences))
             .collect(Collectors.toList());
+    }
+
+    private boolean matchesTrendPreferences(Map<String, Object> trend, UserPreferences preferences) {
+        double avgMinTemp = (double) trend.get("AverageMinTemp");
+        double avgMaxTemp = (double) trend.get("AverageMaxTemp");
+        return avgMinTemp >= preferences.getMinTemperature() &&
+               avgMaxTemp <= preferences.getMaxTemperature();
     }
 
     private void validatePreferences(UserPreferences preferences) {
