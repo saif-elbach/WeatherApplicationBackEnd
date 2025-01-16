@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Spring]]></title><description><![CDATA[Level up your Java code and explore what Spring can do for you.]]></description><link>https://spring.io</link><generator>GatsbyJS</generator><lastBuildDate>Thu, 16 Jan 2025 11:10:22 GMT</lastBuildDate><item><title><![CDATA[Spring Framework 6.2.2 Available Now]]></title><link>https://spring.io/blog/2025/01/16/spring-framework-6-2-2-available-now</link><guid isPermaLink="true">https://spring.io/blog/2025/01/16/spring-framework-6-2-2-available-now</guid><dc:creator><![CDATA[snicoll]]></dc:creator><pubDate>Thu, 16 Jan 2025 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;On behalf of the team and everyone who has contributed, I am pleased to announce that Spring Framework &lt;code&gt;6.2.2&lt;/code&gt; are available now.&lt;/p&gt;
+&lt;p&gt;Spring Framework &lt;code&gt;6.2.2&lt;/code&gt; ships with &lt;a href=&quot;https://github.com/spring-projects/spring-framework/releases/tag/v6.2.2&quot;&gt;47 fixes and documentation improvements&lt;/a&gt;. This version will be shipped next week with Spring Boot &lt;code&gt;3.4.2&lt;/code&gt; and &lt;code&gt;3.5.0-M1&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://spring.io/projects/spring-framework/&quot;&gt;Project Page&lt;/a&gt; | &lt;a href=&quot;https://github.com/spring-projects/spring-framework&quot;&gt;GitHub&lt;/a&gt; | &lt;a href=&quot;https://github.com/spring-projects/spring-framework/issues&quot;&gt;Issues&lt;/a&gt; | &lt;a href=&quot;https://docs.spring.io/spring-framework/reference/&quot;&gt;Documentation&lt;/a&gt;&lt;/p&gt;</content:encoded></item><item><title><![CDATA[This Week in Spring - January 14th, 2025]]></title><link>https://spring.io/blog/2025/01/14/this-week-in-spring-january-14th-2025</link><guid isPermaLink="true">https://spring.io/blog/2025/01/14/this-week-in-spring-january-14th-2025</guid><dc:creator><![CDATA[joshlong]]></dc:creator><pubDate>Tue, 14 Jan 2025 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;Hi, Spring fans, and greetings from the island of St. Barths! &lt;em&gt;Salut depuis l&apos;île de Saint-Barthélemy!&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;I&apos;m on a bit of PTO and have been bouncing around from one beach to another with my family. I just landed on a winning combination for a beach: warm water, a restaurant/bar, and some for-pay seats with shade. There are precisely three things to do in such a cherished spot: use it as a launchpad for occasional dips in the sea, read, and sleep—usually in that order!&lt;/p&gt;
+&lt;p&gt;And you know what I&apos;ve been reading? The wild and wacky antics of the Spring community, of course!&lt;/p&gt;
+&lt;p&gt;There&apos;s a ton of exciting news to dive into, so let&apos;s dive really deep into this week&apos;s roundup—and then I&apos;ll dive really deep into that beautiful blue ocean!&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://spring.io/blog/2025/01/13/spring-ai-mcp-0&quot;&gt;Spring AI MCP 0.5.0 is now available&lt;/a&gt;: Spring AI makes it trivial to build MCP clients and services. MCP, of course, is a protocol that allows you to integrate arbitrary external data sources into your LLMs, like Claude.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://spring.io/blog/2025/01/10/spring-cloud-2023-0-5-aka-leyton-has-been-released&quot;&gt;Spring Cloud 2023.0.5 (aka Leyton) is now available&lt;/a&gt;: This release includes several updates and fixes—definitely worth checking out!&lt;/li&gt;
+&lt;li&gt;In last week&apos;s installment of &lt;em&gt;A Bootiful Podcast&lt;/em&gt;, I talked to the good, the great, the legendary  Dr. Dave Syer. We explored the awesome (and experimental!) &lt;a href=&quot;https://spring.io/blog/2025/01/10/spring-cloud-2023-0-5-aka-leyton-has-been-released&quot;&gt;new Spring gRPC project&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Finally, a solution to my often-lamented build time problems with GraalVM: &lt;a href=&quot;https://github.com/xdev-software/music-maven-plugin&quot;&gt;a Maven plugin that plays music while the build is running&lt;/a&gt;! Thanks, Richard Fichtner!&lt;/li&gt;
+&lt;li&gt;A very practical guide  on how to integrate Google Analytics &lt;a href=&quot;https://foojay.io/today/integrating-google-analytics-with-vaadin-flow-a-step-by-step-guide/&quot;&gt;into your Vaadin Flow application&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Wow! This post on using Spring AI and Vaadin to build an application that accepts images as inputs and then converts them into editable grids &lt;a href=&quot;https://vaadin.com/blog/extracting-structured-data-from-images-using-ai-in-java&quot;&gt;of data in a Vaadin UI&lt;/a&gt; is something to behold!&lt;/li&gt;
+&lt;li&gt;I love SivaLabs&apos; amazing post looking at the &lt;code&gt;JdbcClient&lt;/code&gt;, which has been in Spring Framework for more than a year. I have replaced all my JDBC &lt;a href=&quot;https://www.sivalabs.in/spring-boot-jdbcclient-tutorial/&quot;&gt;work with the &lt;code&gt;JdbcClient&lt;/code&gt;&lt;/a&gt;, vastly preferring it to the &lt;code&gt;JdbcTemplate&lt;/code&gt; for my work.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://www.dhaval-shah.com/parallel-processing-virtual-threads-reactor-vs-jdk/&quot;&gt;Dhaval Shah&lt;/a&gt; has a great post on diving into virtual threads. It’s an insightful read comparing parallel processing with virtual threads, Project Reactor, and the JDK!&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Enjoy the updates, and I’ll catch you next week—probably still sandy, sunburned, and thinking about Spring!&lt;/p&gt;</content:encoded></item><item><title><![CDATA[Spring AI MCP 0.5.0 (Milestone) Released]]></title><link>https://spring.io/blog/2025/01/13/spring-ai-mcp-0</link><guid isPermaLink="true">https://spring.io/blog/2025/01/13/spring-ai-mcp-0</guid><dc:creator><![CDATA[tzolov]]></dc:creator><pubDate>Mon, 13 Jan 2025 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;We&apos;re pleased to announce Spring AI MCP &lt;code&gt;0.5.0&lt;/code&gt; milestone release.&lt;/p&gt;
+&lt;h2 id=&quot;major-features--improvements&quot; style=&quot;position:relative;&quot;&gt;&lt;a href=&quot;#major-features--improvements&quot; aria-label=&quot;major features  improvements permalink&quot; class=&quot;anchor before&quot;&gt;&lt;svg aria-hidden=&quot;true&quot; focusable=&quot;false&quot; height=&quot;16&quot; version=&quot;1.1&quot; viewBox=&quot;0 0 16 16&quot; width=&quot;16&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/a&gt;Major Features &amp;#x26; Improvements&lt;/h2&gt;
+&lt;h3 id=&quot;transport-layer-enhancements&quot; style=&quot;position:relative;&quot;&gt;&lt;a href=&quot;#transport-layer-enhancements&quot; aria-label=&quot;transport layer enhancements permalink&quot; class=&quot;anchor before&quot;&gt;&lt;svg aria-hidden=&quot;true&quot; focusable=&quot;false&quot; height=&quot;16&quot; version=&quot;1.1&quot; viewBox=&quot;0 0 16 16&quot; width=&quot;16&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/a&gt;Transport Layer Enhancements&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;New Servlet-based SSE Transport&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Added HttpServletSseServerTransport with Servlet 6.0 support&lt;/li&gt;
+&lt;li&gt;Enables integration with any Java HTTP server supporting Servlets&lt;/li&gt;
+&lt;li&gt;Compatible with Jakarta Servlet API 6.1.0&lt;/li&gt;
+&lt;li&gt;Includes comprehensive integration tests with Tomcat&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Enhanced WebMVC Transport&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Replaced Spring&apos;s SseEmitter with custom BlockingQueue-based implementation&lt;/li&gt;
+&lt;li&gt;Improved event delivery control and connection management&lt;/li&gt;
+&lt;li&gt;Added dedicated session management with SSEEvent record&lt;/li&gt;
+&lt;li&gt;Enhanced error handling and timeout management&lt;/li&gt;
+&lt;li&gt;Includes comprehensive integration tests&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&quot;architecture--modularity&quot; style=&quot;position:relative;&quot;&gt;&lt;a href=&quot;#architecture--modularity&quot; aria-label=&quot;architecture  modularity permalink&quot; class=&quot;anchor before&quot;&gt;&lt;svg aria-hidden=&quot;true&quot; focusable=&quot;false&quot; height=&quot;16&quot; version=&quot;1.1&quot; viewBox=&quot;0 0 16 16&quot; width=&quot;16&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/a&gt;Architecture &amp;#x26; Modularity&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Transport Implementation Modularization&lt;/strong&gt;
+&lt;ul&gt;
+&lt;li&gt;Split transport implementations into dedicated modules&lt;/li&gt;
+&lt;li&gt;Created separate modules for WebFlux and WebMVC SSE transports&lt;/li&gt;
+&lt;li&gt;Added framework-independent SSE client implementations using java.net.http&lt;/li&gt;
+&lt;li&gt;Introduced shared test module for common test utilities&lt;/li&gt;
+&lt;li&gt;Maintained STDIO transport in core for basic functionality&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&quot;build--dependency-management&quot; style=&quot;position:relative;&quot;&gt;&lt;a href=&quot;#build--dependency-management&quot; aria-label=&quot;build  dependency management permalink&quot; class=&quot;anchor before&quot;&gt;&lt;svg aria-hidden=&quot;true&quot; focusable=&quot;false&quot; height=&quot;16&quot; version=&quot;1.1&quot; viewBox=&quot;0 0 16 16&quot; width=&quot;16&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/a&gt;Build &amp;#x26; Dependency Management&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;New Bill of Materials (BOM)&lt;/strong&gt;
+&lt;ul&gt;
+&lt;li&gt;Introduced mcp-bom module for centralized version management&lt;/li&gt;
+&lt;li&gt;Simplified dependency version management across Spring AI MCP projects&lt;/li&gt;
+&lt;li&gt;Streamlined version compatibility across components&lt;/li&gt;
+&lt;li&gt;Updated documentation to reference the new BOM&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;security-updates&quot; style=&quot;position:relative;&quot;&gt;&lt;a href=&quot;#security-updates&quot; aria-label=&quot;security updates permalink&quot; class=&quot;anchor before&quot;&gt;&lt;svg aria-hidden=&quot;true&quot; focusable=&quot;false&quot; height=&quot;16&quot; version=&quot;1.1&quot; viewBox=&quot;0 0 16 16&quot; width=&quot;16&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/a&gt;Security Updates&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Updated Tomcat dependencies to address security vulnerabilities:
+&lt;ul&gt;
+&lt;li&gt;tomcat-embed-core upgraded from 10.1.18 to 10.1.34&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;compatibility-notes&quot; style=&quot;position:relative;&quot;&gt;&lt;a href=&quot;#compatibility-notes&quot; aria-label=&quot;compatibility notes permalink&quot; class=&quot;anchor before&quot;&gt;&lt;svg aria-hidden=&quot;true&quot; focusable=&quot;false&quot; height=&quot;16&quot; version=&quot;1.1&quot; viewBox=&quot;0 0 16 16&quot; width=&quot;16&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/a&gt;Compatibility Notes&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Requires Jakarta Servlet API 6.1.0 for Servlet-based transport&lt;/li&gt;
+&lt;li&gt;Compatible with Tomcat 11.0.2 and newer&lt;/li&gt;
+&lt;li&gt;Users should migrate to the new BOM for dependency management&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;documentation-updates&quot; style=&quot;position:relative;&quot;&gt;&lt;a href=&quot;#documentation-updates&quot; aria-label=&quot;documentation updates permalink&quot; class=&quot;anchor before&quot;&gt;&lt;svg aria-hidden=&quot;true&quot; focusable=&quot;false&quot; height=&quot;16&quot; version=&quot;1.1&quot; viewBox=&quot;0 0 16 16&quot; width=&quot;16&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/a&gt;Documentation Updates&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Added dependency management documentation&lt;/li&gt;
+&lt;li&gt;Updated existing documentation to use BOM references&lt;/li&gt;
+&lt;li&gt;Added integration examples for new transport implementations&lt;/li&gt;
+&lt;/ul&gt;</content:encoded></item><item><title><![CDATA[Spring Cloud 2023.0.5 (aka Leyton) Is Now Available]]></title><link>https://spring.io/blog/2025/01/10/spring-cloud-2023-0-5-aka-leyton-has-been-released</link><guid isPermaLink="true">https://spring.io/blog/2025/01/10/spring-cloud-2023-0-5-aka-leyton-has-been-released</guid><dc:creator><![CDATA[spencergibb]]></dc:creator><pubDate>Fri, 10 Jan 2025 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;On behalf of the community, I am pleased to announce that the General Availability (RELEASE) of the &lt;a href=&quot;https://cloud.spring.io&quot;&gt;Spring Cloud 2023.0.5&lt;/a&gt;
+(aka Leyton) Release Train is available today. The release can be found in &lt;a href=&quot;https://repo1.maven.org/maven2/org/springframework/cloud/spring-cloud-dependencies/2023.0.5/&quot;&gt;Maven Central&lt;/a&gt;. You can check out the 2023.0 &lt;a href=&quot;https://github.com/spring-cloud/spring-cloud-release/wiki/Spring-Cloud-2023.0-Release-Notes&quot;&gt;release notes for more information&lt;/a&gt;.&lt;/p&gt;
+&lt;h2 id=&quot;notable-changes-in-the-202305-release-train&quot; style=&quot;position:relative;&quot;&gt;&lt;a href=&quot;#notable-changes-in-the-202305-release-train&quot; aria-label=&quot;notable changes in the 202305 release train permalink&quot; class=&quot;anchor before&quot;&gt;&lt;svg aria-hidden=&quot;true&quot; focusable=&quot;false&quot; height=&quot;16&quot; version=&quot;1.1&quot; viewBox=&quot;0 0 16 16&quot; width=&quot;16&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/a&gt;Notable Changes in the 2023.0.5 Release Train&lt;/h2&gt;
+&lt;p&gt;This is mostly a bugfix and dependency upgrade release. Please find the issues and pull requests &lt;a href=&quot;https://github.com/orgs/spring-cloud/projects/161&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;The following modules were updated as part of 2023.0.5:&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Module&lt;/th&gt;
+&lt;th&gt;Version&lt;/th&gt;
+&lt;th&gt;Issues&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Spring Cloud Starter Build&lt;/td&gt;
+&lt;td&gt;2023.0.5&lt;/td&gt;
+&lt;td&gt;(&lt;a href=&quot;https://github.com/spring-cloud/spring-cloud-starter-build/releases/tag/v2023.0.5&quot;&gt;issues&lt;/a&gt;)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Spring Cloud Netflix&lt;/td&gt;
+&lt;td&gt;4.1.5&lt;/td&gt;
+&lt;td&gt;(&lt;a href=&quot;https://github.com/spring-cloud/spring-cloud-netflix/releases/tag/v4.1.5&quot;&gt;issues&lt;/a&gt;)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Spring Cloud Config&lt;/td&gt;
+&lt;td&gt;4.1.5&lt;/td&gt;
+&lt;td&gt;(&lt;a href=&quot;https://github.com/spring-cloud/spring-cloud-config/releases/tag/v4.1.5&quot;&gt;issues&lt;/a&gt;)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Spring Cloud Build&lt;/td&gt;
+&lt;td&gt;4.1.5&lt;/td&gt;
+&lt;td&gt;(&lt;a href=&quot;https://github.com/spring-cloud/spring-cloud-build/releases/tag/v4.1.5&quot;&gt;issues&lt;/a&gt;)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Spring Cloud Kubernetes&lt;/td&gt;
+&lt;td&gt;3.1.5&lt;/td&gt;
+&lt;td&gt;(&lt;a href=&quot;https://github.com/spring-cloud/spring-cloud-kubernetes/releases/tag/v3.1.5&quot;&gt;issues&lt;/a&gt;)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Spring Cloud Stream&lt;/td&gt;
+&lt;td&gt;4.1.5&lt;/td&gt;
+&lt;td&gt;(&lt;a href=&quot;https://github.com/spring-cloud/spring-cloud-stream/releases/tag/v4.1.5&quot;&gt;issues&lt;/a&gt;)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Spring Cloud Function&lt;/td&gt;
+&lt;td&gt;4.1.5&lt;/td&gt;
+&lt;td&gt;(&lt;a href=&quot;https://github.com/spring-cloud/spring-cloud-function/releases/tag/v4.1.5&quot;&gt;issues&lt;/a&gt;)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Spring Cloud Circuitbreaker&lt;/td&gt;
+&lt;td&gt;3.1.4&lt;/td&gt;
+&lt;td&gt;(&lt;a href=&quot;https://github.com/spring-cloud/spring-cloud-circuitbreaker/releases/tag/v3.1.4&quot;&gt;issues&lt;/a&gt;)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;hr&gt;
+&lt;p&gt;As always, we welcome feedback on &lt;a href=&quot;https://github.com/spring-cloud/&quot;&gt;GitHub&lt;/a&gt;, on &lt;a href=&quot;https://gitter.im/spring-cloud/spring-cloud&quot;&gt;Gitter&lt;/a&gt;, on &lt;a href=&quot;https://stackoverflow.com/questions/tagged/spring-cloud&quot;&gt;Stack Overflow&lt;/a&gt;, or on &lt;a href=&quot;https://twitter.com/SpringCloud&quot;&gt;Twitter&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;To get started with Maven with a BOM (dependency management only):&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-xml&quot;&gt;
+&amp;#x3C;dependencyManagement&gt;
+    &amp;#x3C;dependencies&gt;
+        &amp;#x3C;dependency&gt;
+            &amp;#x3C;groupId&gt;org.springframework.cloud&amp;#x3C;/groupId&gt;
+            &amp;#x3C;artifactId&gt;spring-cloud-dependencies&amp;#x3C;/artifactId&gt;
+            &amp;#x3C;version&gt;2023.0.5&amp;#x3C;/version&gt;
+            &amp;#x3C;type&gt;pom&amp;#x3C;/type&gt;
+            &amp;#x3C;scope&gt;import&amp;#x3C;/scope&gt;
+        &amp;#x3C;/dependency&gt;
+    &amp;#x3C;/dependencies&gt;
+&amp;#x3C;/dependencyManagement&gt;
+&amp;#x3C;dependencies&gt;
+    &amp;#x3C;dependency&gt;
+        &amp;#x3C;groupId&gt;org.springframework.cloud&amp;#x3C;/groupId&gt;
+        &amp;#x3C;artifactId&gt;spring-cloud-starter-config&amp;#x3C;/artifactId&gt;
+    &amp;#x3C;/dependency&gt;
+    &amp;#x3C;dependency&gt;
+        &amp;#x3C;groupId&gt;org.springframework.cloud&amp;#x3C;/groupId&gt;
+        &amp;#x3C;artifactId&gt;spring-cloud-starter-netflix-eureka-client&amp;#x3C;/artifactId&gt;
+    &amp;#x3C;/dependency&gt;
+    ...
+&amp;#x3C;/dependencies&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;or with Gradle:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-groovy&quot;&gt;plugins {
+  id &apos;java&apos;
+  id &apos;org.springframework.boot&apos; version &apos;3.3.7&apos;
+  id &apos;io.spring.dependency-management&apos; version &apos;1.1.7&apos;
+}
+
+//...
+
+ext {
+  set(&apos;springCloudVersion&apos;, &quot;2023.0.4&quot;)
+}
+
+dependencies {
+  implementation &apos;org.springframework.cloud:spring-cloud-starter-config&apos;
+  implementation &apos;org.springframework.cloud:spring-cloud-starter-netflix-eureka-client&apos;
+  //...
+}
+
+dependencyManagement {
+  imports {
+    mavenBom &quot;org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}&quot;
+  }
+}
+
+//...
+
+&lt;/code&gt;&lt;/pre&gt;</content:encoded></item></channel></rss>

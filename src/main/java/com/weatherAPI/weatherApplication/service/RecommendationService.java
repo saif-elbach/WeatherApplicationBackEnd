@@ -7,6 +7,11 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Service class responsible for generating recommendations based on bike trends and weather data.
+ * It calculates distances between weather stations and bike stations, maps bike trends to stations,
+ * and provides weather-related recommendations for bikes.
+ */
 @Service
 public class RecommendationService {
 
@@ -16,6 +21,12 @@ public class RecommendationService {
     @Autowired
     private WeatherService weatherService;
 
+    /**
+     * Retrieves bike and weather recommendations including mapped bike trends, weather data,
+     * and calculated distances between bike stations and weather stations.
+     *
+     * @return a map containing weather data, bike stations with trends, and distances to stations.
+     */
     public Map<String, Object> getBikeWeatherRecommendations() {
         List<Map<String, Object>> weatherData = getWeatherData();
         List<BikeTrend> bikeTrends = bikeService.getTrends();
@@ -31,6 +42,13 @@ public class RecommendationService {
         );
     }
 
+    /**
+     * Calculates distances from a specified weather station to all bike stations.
+     *
+     * @param weatherStationName the name of the weather station.
+     * @return a map containing the distances to bike stations or an error if the weather station is not found.
+     */
+    
     public Map<String, Object> getDistancesToBikeStations(String weatherStationName) {
         List<Map<String, Object>> weatherData = getWeatherData();
         Optional<Map<String, Object>> weatherStationOpt = findWeatherStationByName(weatherData, weatherStationName);
@@ -49,6 +67,13 @@ public class RecommendationService {
         );
     }
 
+    /**
+     * Maps bike trends to a simplified data structure for easier processing.
+     *
+     * @param bikeTrends a list of bike trend data.
+     * @return a list of maps containing bike trend information.
+     */
+    
     private List<Map<String, Object>> mapBikeTrends(List<BikeTrend> bikeTrends) {
     	return bikeTrends.stream()
     	        .map(trend -> {
@@ -64,6 +89,14 @@ public class RecommendationService {
 
     }
 
+    /**
+     * Calculates distances between bike stations and other stations (weather or bike).
+     * Augments bike station data with distance information.
+     *
+     * @param bikeStations a list of bike station data.
+     * @param weatherData  a list of weather station data.
+     * @return a list of bike stations with calculated distances to other stations.
+     */
     private List<Map<String, Object>> calculateBikeStationsDistances(List<Map<String, Object>> bikeStations, List<Map<String, Object>> weatherData) {
         return bikeStations.stream().map(station -> {
             Double stationLat = (Double) station.get("latitude");
@@ -80,6 +113,15 @@ public class RecommendationService {
         }).filter(Objects::nonNull).collect(Collectors.toList());
     }
 
+    /**
+     * Computes distances between a given point and a list of stations (weather or bike).
+     *
+     * @param lat1    the latitude of the origin point.
+     * @param lon1    the longitude of the origin point.
+     * @param stations a list of station data.
+     * @param nameKey the key for identifying the station (e.g., "DistrictName" or "stationName").
+     * @return a list of maps containing station names and their distances from the origin point.
+     */
     private List<Map<String, Object>> calculateDistancesToStations(Double lat1, Double lon1, List<Map<String, Object>> stations, String nameKey) {
         return stations.stream().map(station -> {
             Double stationLat = (Double) station.get("latitude");
@@ -96,6 +138,13 @@ public class RecommendationService {
         }).filter(Objects::nonNull).collect(Collectors.toList());
     }
 
+    /**
+     * Calculates distances between a specified weather station and all bike stations.
+     *
+     * @param weatherStation the weather station data.
+     * @param bikeStations   a list of bike station data.
+     * @return a list of maps containing bike station names, distances, and available bikes.
+     */
     private List<Map<String, Object>> calculateDistancesToWeatherStation(Map<String, Object> weatherStation, List<Map<String, Object>> bikeStations) {
         Double weatherLat = (Double) weatherStation.get("Latitude");
         Double weatherLon = (Double) weatherStation.get("Longitude");
@@ -116,12 +165,24 @@ public class RecommendationService {
         }).filter(Objects::nonNull).collect(Collectors.toList());
     }
 
+    /**
+     * Searches for a weather station by name from a list of weather data.
+     *
+     * @param weatherData        a list of weather station data.
+     * @param weatherStationName the name of the weather station to search for.
+     * @return an Optional containing the weather station if found, or empty if not.
+     */
     private Optional<Map<String, Object>> findWeatherStationByName(List<Map<String, Object>> weatherData, String weatherStationName) {
         return weatherData.stream()
                 .filter(weather -> weatherStationName.equals(weather.get("DistrictName")))
                 .findFirst();
     }
 
+    /**
+     * Retrieves predefined weather data.
+     *
+     * @return a list of maps representing weather station data.
+     */
     private List<Map<String, Object>> getWeatherData() {
         return Arrays.asList(
                 Map.of("DistrictName", "Bolzano, Überetsch and Unterland", "Latitude", 46.498, "Longitude", 11.354),
@@ -134,6 +195,15 @@ public class RecommendationService {
         );
     }
 
+    /**
+     * Calculates the distance in kilometers between two geographical coordinates.
+     *
+     * @param lat1 the latitude of the first point.
+     * @param lon1 the longitude of the first point.
+     * @param lat2 the latitude of the second point.
+     * @param lon2 the longitude of the second point.
+     * @return the calculated distance in kilometers.
+     */
     private double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
         final int R = 6371;
         double latDistance = Math.toRadians(lat2 - lat1);

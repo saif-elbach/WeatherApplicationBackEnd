@@ -5,16 +5,31 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
 import java.util.stream.Collectors;
+
+/**
+ * Service class for fetching and processing weather forecast data for multiple stations.
+ * It provides functionality to retrieve weather data for specific days and filter relevant details.
+ */
 @Service
 public class WeatherForecastService {
 
     private final RestTemplate restTemplate;
 
-    // Constructor to inject RestTemplate
+    /**
+     * Constructor for injecting the RestTemplate dependency.
+     *
+     * @param restTemplate the RestTemplate used for making HTTP requests.
+     */ 
     public WeatherForecastService(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
 
+    /**
+     * Retrieves weather forecast data for all predefined stations for a specific day.
+     *
+     * @param day the date for which the weather forecast is requested (in YYYY-MM-DD format).
+     * @return a list of maps containing filtered weather data for each station.
+     */
     public List<Map<String, Object>> getWeatherForecastForAllStations(String day) {
         List<String> stations = List.of("Bolzano", "Meran", "Vinschgau", "Eisacktal", "Pustertal", "Wipptal");
 
@@ -25,6 +40,13 @@ public class WeatherForecastService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Fetches weather data for a specific station and day from the external API.
+     *
+     * @param stationName the name of the weather station.
+     * @param day         the date for which the forecast is requested (in YYYY-MM-DD format).
+     * @return a map containing the weather forecast for the specified station and day, or null if no data is found.
+     */
     private Map<String, Object> fetchWeatherForStation(String stationName, String day) {
         String url = "https://tourism.api.opendatahub.com/v1/Weather/District?districtName" + stationName;
         List<Map<String, Object>> weatherDataList = restTemplate.getForObject(url, List.class);
@@ -49,6 +71,12 @@ public class WeatherForecastService {
         return selectedForecast;
     }
 
+    /**
+     * Filters and extracts relevant weather information from the raw forecast data.
+     *
+     * @param forecastData the raw forecast data.
+     * @return a map containing only the relevant weather details.
+     */
     private Map<String, Object> filterRelevantWeatherData(Map<String, Object> forecastData) {
         if (forecastData != null) {
             Map<String, Object> filteredData = new HashMap<>();
