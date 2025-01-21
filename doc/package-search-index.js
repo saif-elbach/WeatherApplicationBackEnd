@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"com.weatherAPI.weatherApplication.config"},{"l":"com.weatherAPI.weatherApplication.controller"},{"l":"com.weatherAPI.weatherApplication.model"},{"l":"com.weatherAPI.weatherApplication.service"}];updateSearchResults();

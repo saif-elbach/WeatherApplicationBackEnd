@@ -1,0 +1,5 @@
+com.weatherAPI.weatherApplication
+com.weatherAPI.weatherApplication.config
+com.weatherAPI.weatherApplication.controller
+com.weatherAPI.weatherApplication.model
+com.weatherAPI.weatherApplication.service
